@@ -2,7 +2,7 @@
 
 namespace SecuestroBienes.Interfaces
 {
-    public interface ISecuestroBienRepository : IGenericRepository<SecuestroBiene>
+    public interface ISecuestroBienRepository : IGenericRepository<SecuestroBien>
     {
     }
 }

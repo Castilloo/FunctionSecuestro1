@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SecuestroBienes.Models.Entities
 {
-    public class SecuestroBiene
+    [Table("Secuestro_bienes")]
+    public class SecuestroBien
     {
         public string NoResolucionEmbargo { get; set; }
         public DateTime FechaResolucionEmbargo { get; set; }

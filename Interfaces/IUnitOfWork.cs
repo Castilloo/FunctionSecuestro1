@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace SecuestroBienes.Interfaces
 {
-    public interface IUnitOFWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
-        ISecuestroBienRepository _secuestroBienRepository { get; }
-        IBandejaTrabajoRepository _bandejaTrabajoRepository { get; }
+        ISecuestroBienRepository SecuestroBienRepository { get; }
+        IBandejaTrabajoRepository BandejaTrabajoRepository { get; }
         Task<int> Save();
     }
 }

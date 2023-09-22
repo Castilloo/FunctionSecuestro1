@@ -5,30 +5,35 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;  
+using Newtonsoft.Json;
+using SecuestroBienes.Interfaces;       
+using SecuestroBienes.Models.DataContext;
+using System;
 
 namespace SecuestroBienes
 {
-    public static class Secuestro
+    public class Secuestro
     {
-        [FunctionName("Secuestro")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public Secuestro(IUnitOfWork unitOfWork)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            _unitOfWork = unitOfWork;
+        }
 
-            string name = req.Query["name"];
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+        [FunctionName("Secuestro")]
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req)
+        {
+            try
+            {   
+                var result = await _unitOfWork._secuestroBienRepository.ObtenerTodos();
+                return new OkObjectResult(result);
+            } catch(Exception e)
+            {
+                return new BadRequestObjectResult(e);
+            }
+            
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SecuestroBienes.Models.Entities;
-using System;
-using System.Collections.Generic;
 
 namespace SecuestroBienes.Models.DataContext
 {
@@ -19,46 +17,12 @@ namespace SecuestroBienes.Models.DataContext
 
         public virtual DbSet<BandejaTrabajo> BandejaTrabajos { get; set; }
 
-        public virtual DbSet<SecuestroBiene> SecuestroBienes { get; set; }
+        public virtual DbSet<SecuestroBien> SecuestroBienes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            List<BandejaTrabajo> bandejaTrabajos = new List<BandejaTrabajo>();
-            bandejaTrabajos.Add(new BandejaTrabajo()
-            {
-                Id = 1,
-                TipoObligacion = "Tránsito",
-                EtapaMc = "Secuestro",
-                FkNumResolucionEmbargo = "246810",
-                NoProcesoGc = "123",
-                TipoDocCiudadanoEmpresa = "CC",
-                NroDocCiudadanoEmpresa = "100023233",
-                NombreCiudadanoEmpresa = "Abogado1 Reyes",
-                FechaPreinscripcion = DateTime.Now
-            });
-
-            /*
-            secuestroBienes.Add(new SecuestroBiene(){
-                NoResolucionEmbargo = "246810",
-                FechaResolucionEmbargo = new DateTime(2022, 3, 10),
-                TipoBien = "Inmueble",
-                Entidad = "CDC",
-                NoProcesoGc = "123",
-                TipoObligacion = "Tránsito",
-                TipoDocumento = "CC",
-                NumeroDocumento = "1200985576",
-                NombreCiudadano = "Fulanito De Tal",
-                ValorNominal = 2000,
-                Interes = 20,
-                Saldo = 1500000m,
-                Total = 339774.56m,
-                FechaCalculada = new DateTime(2023, 2, 15),
-                Diligencia = true
-            });*/
-
             modelBuilder.Entity<BandejaTrabajo>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PK__Bandeja___3213E83F2B026E74");
@@ -98,7 +62,7 @@ namespace SecuestroBienes.Models.DataContext
                     .HasColumnName("Nro_doc_ciudadano_empresa");
                 entity.Property(e => e.TipoDocCiudadanoEmpresa)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("Tipo_doc_ciudadano_empresa");
                 entity.Property(e => e.TipoObligacion)
@@ -107,48 +71,9 @@ namespace SecuestroBienes.Models.DataContext
                     .IsUnicode(false)
                     .HasColumnName("Tipo_obligacion");
 
-                entity.HasData(bandejaTrabajos);
             });
 
-            List<SecuestroBiene> secuestroBienes = new List<SecuestroBiene>();
-            secuestroBienes.Add(new SecuestroBiene()
-            {
-                NoResolucionEmbargo = "1234567",
-                FechaResolucionEmbargo = new DateTime(2021, 7, 25),
-                TipoBien = "Inmueble",
-                Entidad = "Agustín Codazzi",
-                NoProcesoGc = "123",
-                TipoObligacion = "Tránsito",
-                TipoDocumento = "CC",
-                NumeroDocumento = "56789000",
-                NombreCiudadano = "Juanito Alimaña",
-                ValorNominal = 100,
-                Interes = 17,
-                Saldo = 2000000m,
-                Total = 762553.56m,
-                FechaCalculada = new DateTime(2022, 3, 5),
-                Diligencia = false
-            });
-            secuestroBienes.Add(new SecuestroBiene()
-            {
-                NoResolucionEmbargo = "246810",
-                FechaResolucionEmbargo = new DateTime(2022, 3, 10),
-                TipoBien = "Inmueble",
-                Entidad = "CDC",
-                NoProcesoGc = "123",
-                TipoObligacion = "Tránsito",
-                TipoDocumento = "CC",
-                NumeroDocumento = "1200985576",
-                NombreCiudadano = "Fulanito De Tal",
-                ValorNominal = 2000,
-                Interes = 20,
-                Saldo = 1500000m,
-                Total = 339774.56m,
-                FechaCalculada = new DateTime(2023, 2, 15),
-                Diligencia = true
-            });
-
-            modelBuilder.Entity<SecuestroBiene>(entity =>
+            modelBuilder.Entity<SecuestroBien>(entity =>
             {
 
                 entity.HasKey(e => e.NoResolucionEmbargo);
@@ -203,7 +128,6 @@ namespace SecuestroBienes.Models.DataContext
                 entity.Property(e => e.Saldo).HasColumnType("money");
                 entity.Property(e => e.Total).HasColumnType("numeric(18, 2)");
 
-                entity.HasData(secuestroBienes);
             });
 
             OnModelCreatingPartial(modelBuilder);
